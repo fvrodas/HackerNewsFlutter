@@ -20,16 +20,6 @@ class HackerNewsApp extends StatelessWidget {
   }
 }
 
-class SwipeToRefreshLayout extends StatefulWidget{
-
-  @override
-  State<StatefulWidget> createState() {
-
-    return null;
-  }
-
-}
-
 class FeedPage extends StatefulWidget {
   FeedPage({Key key, this.title}) : super(key: key);
   final String title;
@@ -55,6 +45,7 @@ class _FeedPageState extends State<FeedPage> {
             title: story.title,
             text: "by " + story.by,
             score: story.score.toString(),
+            url: story.url,
           ));
           watch(r.length, _stories.length);
         }).catchError(() {

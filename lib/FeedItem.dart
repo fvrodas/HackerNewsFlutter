@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class FeedItem extends StatefulWidget {
-  FeedItem({Key key, this.title, this.text, this.score}) : super(key: key);
+  FeedItem({Key key, this.title, this.text, this.score, this.url}) : super(key: key);
 
   final String title;
   final String text;
   final String score;
+  final String url;
 
   @override
   _FeedItemState createState() => _FeedItemState();
 }
 
 class _FeedItemState extends State<FeedItem> {
+
+  void _openUrl() {
+       Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FeedDetailPage(
+                widget.title, widget.url
+              ),
+            )
+       );
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: _openUrl,
+      child: Container(
       margin: EdgeInsets.fromLTRB(4, 4, 4, 4),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -50,6 +66,33 @@ class _FeedItemState extends State<FeedItem> {
           ],
         ),
       ),
+    ),
+    );
+  }
+}
+
+class FeedDetailPage extends StatelessWidget {
+  FeedDetailPage(this.title, this.url);
+
+  final String title;
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return WebviewScaffold(
+      url: this.url,
+      appBar: new AppBar(
+        title: Text(this.title),
+      ),
+      withZoom: false,
+      withLocalStorage: true,
+      hidden: true,
+      initialChild: Container(
+        color: Colors.redAccent,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      )
     );
   }
 }
