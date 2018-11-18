@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:share/share.dart';
+
 
 class FeedItem extends StatefulWidget {
   FeedItem({Key key, this.title, this.text, this.score, this.url}) : super(key: key);
@@ -31,11 +33,11 @@ class _FeedItemState extends State<FeedItem> {
     return GestureDetector(
       onTap: _openUrl,
       child: Container(
-      margin: EdgeInsets.fromLTRB(4, 4, 4, 4),
+      margin: EdgeInsets.fromLTRB(4, 2, 4, 2),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: Colors.black26, width: 0.6)),
+          border: Border.all(color: Colors.black12, width: 0.6)),
       child: Container(
         margin: EdgeInsets.all(8.0),
         child: Row(
@@ -58,10 +60,21 @@ class _FeedItemState extends State<FeedItem> {
                 ),)
               ],
             )),
-            Text(
-              widget.score != null? widget.score : "",
-              maxLines: 1,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                borderRadius: BorderRadius.circular(12)
+              ),
+              margin: EdgeInsets.all(4.0),
+              height: 24,
+              width: 24,
+              child:Center(
+                child:  Text(
+                  widget.score != null? widget.score : "",
+                  maxLines: 1,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ),
             )
           ],
         ),
@@ -77,22 +90,38 @@ class FeedDetailPage extends StatelessWidget {
   final String title;
   final String url;
 
+  void _handleTap() {
+      Share.share(this.url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
       url: this.url,
       appBar: new AppBar(
         title: Text(this.title),
+        centerTitle: true,
+        actions: <Widget>[
+          GestureDetector(
+            onTap: _handleTap,
+            child: Center(
+              child:Icon(
+                Icons.share,
+                color: Colors.black,
+              )
+            ),
+          )
+        ],
       ),
       withZoom: false,
       withLocalStorage: true,
       hidden: true,
       initialChild: Container(
-        color: Colors.redAccent,
+        color: Colors.amberAccent,
         child: const Center(
-          child: CircularProgressIndicator(),
+          child: Text('Loading...'),
         ),
-      )
+      ),
     );
   }
 }
