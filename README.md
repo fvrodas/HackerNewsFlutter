@@ -1,14 +1,23 @@
-# Unofficial Hacker News Client for Android
+# Another Unofficial Hacker News Client for Android 
+
+![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)
 
 Unofficial Hacker News client made with Flutter in a few hours, just for learning purposes.
 
-##Screenshots
+## Screenshots
 
-##Dependencies
+<img width="30%" src="https://github.com/fvrodas/HackerNewsFlutter/raw/master/screenshots/01.png" alt="" />
 
-http: ^0.12.0
-share: ^0.5.3
-flutter_webview_plugin: 0.3.0+2
+<img width="30%" src="https://github.com/fvrodas/HackerNewsFlutter/raw/master/screenshots/02.png" alt="" />
+
+<img width="30%" src="https://github.com/fvrodas/HackerNewsFlutter/raw/master/screenshots/03.png" alt="" />
+
+## Dependencies
+
+* [http: ^0.12.0](https://github.com/dart-lang/http)
+* [share: ^0.5.3](https://github.com/flutter/plugins/tree/master/packages/share)
+* [flutter_webview_plugin: 0.3.0+2](https://github.com/fluttercommunity/flutter_webview_plugin)
 
 ## License
 
