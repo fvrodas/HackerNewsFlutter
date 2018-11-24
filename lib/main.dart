@@ -13,7 +13,7 @@ class HackerNewsApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: FeedPage(title: 'Hacker News'),
+      home: FeedPage(title: 'YAHNC'),
     );
   }
 }
@@ -39,7 +39,7 @@ class _FeedPageState extends State<FeedPage> {
     setState(() {
       _isLoading = true;
     });
-    switch(_currentPage) {
+    switch (_currentTab) {
       case 0:
         {
           api.getNewStories().then((r) {
@@ -92,7 +92,6 @@ class _FeedPageState extends State<FeedPage> {
           break;
         }
     }
-
   }
 
   void _loadPage(List<dynamic> page) {
@@ -137,8 +136,27 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
+  Future<void> _reloadStories() async {
+    switch(_currentTab) {
+      case 0: {
+        api.newCached.clear();
+        break;
+      }
+      case 1: {
+        api.topCached.clear();
+        break;
+      }
+      case 2: {
+        api.bestCached.clear();
+        break;
+      }
+    }
+    return _refreshNewsFeed();
+  }
+
   void _loadTab(int i) {
     setState(() {
+      _currentPage = 0;
       _currentTab = i;
     });
     _refreshNewsFeed();
@@ -164,9 +182,6 @@ class _FeedPageState extends State<FeedPage> {
         appBar: AppBar(
           title: Text(widget.title),
           centerTitle: true,
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.refresh), onPressed: _refreshNewsFeed)
-          ],
         ),
         body: _isLoading
             ? Column(
@@ -202,9 +217,11 @@ class _FeedPageState extends State<FeedPage> {
             : Column(
                 children: <Widget>[
                   Expanded(
-                    child: ListView(
-                      children: _page,
-                    ),
+                    child: RefreshIndicator(
+                        child: ListView(
+                          children: _page,
+                        ),
+                        onRefresh: _reloadStories),
                   ),
                   Container(
                     child: Row(
@@ -244,8 +261,7 @@ class _FeedPageState extends State<FeedPage> {
             BottomNavigationBarItem(
                 title: Text("Best Stories"),
                 icon: Icon(Icons.favorite, color: Colors.grey),
-                activeIcon:
-                    Icon(Icons.favorite, color: Colors.orangeAccent))
+                activeIcon: Icon(Icons.favorite, color: Colors.orangeAccent))
           ],
           type: BottomNavigationBarType.fixed,
         ));

@@ -27,7 +27,7 @@ class HackerNewsApi {
   Future<List<List<dynamic>>> getNewStories() async {
     if (newCached.length == 0) {
       final response = await http.get(baseURL + "newstories.json");
-
+      print(response.request.url);
       if (response.statusCode == 200) {
         // If server returns an OK response, parse the JSON
         List<dynamic> resp = json.decode(response.body);
@@ -48,7 +48,7 @@ class HackerNewsApi {
   Future<List<List<dynamic>>> getTopStories() async {
     if (topCached.length == 0) {
       final response = await http.get(baseURL + "topstories.json");
-
+      print(response.request.url);
       if (response.statusCode == 200) {
         List<dynamic> resp = json.decode(response.body);
 
@@ -67,7 +67,7 @@ class HackerNewsApi {
   Future<List<List<dynamic>>> getBestStories() async {
     if (bestCached.length == 0) {
       final response = await http.get(baseURL + "beststories.json");
-      
+      print(response.request.url);
       if (response.statusCode == 200) {
         List<dynamic> resp = json.decode(response.body);
 

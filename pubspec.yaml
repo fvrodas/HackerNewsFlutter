@@ -1,5 +1,5 @@
-name: HackerNews
-description: Hacker News feed 
+name: YAHNC
+description: Hacker News feed app
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -26,7 +26,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.0
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  adaptive_icon_background: "#e6e6e6"
+  adaptive_icon_foreground: "assets/icons/icon.png"
+  image_path: "assets/icons/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

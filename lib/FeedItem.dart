@@ -60,7 +60,7 @@ class _FeedItemState extends State<FeedItem> {
             )),
             Container(
               decoration: BoxDecoration(
-                color: Colors.amber,
+                color: Colors.deepOrangeAccent,
                 borderRadius: BorderRadius.circular(12)
               ),
               margin: EdgeInsets.all(4.0),
@@ -70,7 +70,7 @@ class _FeedItemState extends State<FeedItem> {
                 child:  Text(
                   widget.story.score != null? widget.story.score.toString() : "",
                   maxLines: 1,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10),
                 ),
               ),
             )
