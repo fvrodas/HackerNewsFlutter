@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:share/share.dart';
+import 'Story.dart';
 
 
 class FeedItem extends StatefulWidget {
-  FeedItem({Key key, this.title, this.text, this.score, this.url}) : super(key: key);
-
-  final String title;
-  final String text;
-  final String score;
-  final String url;
+  FeedItem({Key key, this.story}) : super(key: key);
+  final Story story;
 
   @override
   _FeedItemState createState() => _FeedItemState();
@@ -21,7 +18,7 @@ class _FeedItemState extends State<FeedItem> {
        Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => FeedDetailPage(
-                widget.title, widget.url
+                widget.story.title, widget.story.url
               ),
             )
        );
@@ -48,13 +45,14 @@ class _FeedItemState extends State<FeedItem> {
                 Container(
                   margin: EdgeInsets.only(bottom: 4),
                   child: Text(
-                    widget.title != null? widget.title : "",
+                    widget.story.title != null? widget.story.title : "",
                     maxLines: 1,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    softWrap: true,
                   ),
                 ),
-                Container(margin: EdgeInsets.only(left: 8),child: Text(
-                  widget.text != null? widget.text : "",
+                Container(child: Text(
+                  widget.story.by != null &&  widget.story.score != null? "by " + widget.story.by + " | score " + widget.story.score.toString(): "",
                   maxLines: 2,
                   style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),)
@@ -70,7 +68,7 @@ class _FeedItemState extends State<FeedItem> {
               width: 24,
               child:Center(
                 child:  Text(
-                  widget.score != null? widget.score : "",
+                  widget.story.score != null? widget.story.score.toString() : "",
                   maxLines: 1,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
@@ -102,15 +100,7 @@ class FeedDetailPage extends StatelessWidget {
         title: Text(this.title),
         centerTitle: true,
         actions: <Widget>[
-          GestureDetector(
-            onTap: _handleTap,
-            child: Center(
-              child:Icon(
-                Icons.share,
-                color: Colors.black,
-              )
-            ),
-          )
+          IconButton(icon: Icon(Icons.share), onPressed: _handleTap)
         ],
       ),
       withZoom: false,

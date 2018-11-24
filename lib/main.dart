@@ -13,9 +13,7 @@ class HackerNewsApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: FeedPage(
-          title: 'Hacker News'
-      ),
+      home: FeedPage(title: 'Hacker News'),
     );
   }
 }
@@ -30,43 +28,120 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   bool _isLoading = false;
-  List<Widget> _stories = List();
+  int _pages = 0;
+  int _currentTab = 0;
+  int _currentPage = 0;
+  List<Widget> _page = List();
+  List<List<dynamic>> _stories = List();
   HackerNewsApi api = HackerNewsApi();
 
-  void _refreshFeed() {
+  void _refreshNewsFeed() {
     setState(() {
       _isLoading = true;
     });
-    api.getNewStories().then((r) {
-      _stories.clear();
-      for (final i in r) {
-        api.getStory(i as int).then((story) {
-          _stories.add(FeedItem(
-            title: story.title,
-            text: "by " + story.by,
-            score: story.score.toString(),
-            url: story.url,
-          ));
-          watch(r.length, _stories.length);
-        }).catchError(() {
-          setState(() {
-            _stories.add(ErrorItem(
-              title: "Error",
-              text: "Error while obtaining data",
-            ));
-            _isLoading = false;
+    switch(_currentPage) {
+      case 0:
+        {
+          api.getNewStories().then((r) {
+            _pages = r.length;
+            _stories = r;
+            _loadPage(r[0]);
+          }).catchError(() {
+            setState(() {
+              _page.add(ErrorItem(
+                title: "Error",
+                text: "Error while obtaining data",
+              ));
+              _isLoading = false;
+            });
           });
-        });
-      }
-    }).catchError(() {
-      setState(() {
-        _stories.add(ErrorItem(
-          title: "Error",
-          text: "Error while obtaining data",
+          break;
+        }
+      case 1:
+        {
+          api.getTopStories().then((r) {
+            _pages = r.length;
+            _stories = r;
+            _loadPage(r[0]);
+          }).catchError(() {
+            setState(() {
+              _page.add(ErrorItem(
+                title: "Error",
+                text: "Error while obtaining data",
+              ));
+              _isLoading = false;
+            });
+          });
+          break;
+        }
+      case 2:
+        {
+          api.getBestStories().then((r) {
+            _pages = r.length;
+            _stories = r;
+            _loadPage(r[0]);
+          }).catchError(() {
+            setState(() {
+              _page.add(ErrorItem(
+                title: "Error",
+                text: "Error while obtaining data",
+              ));
+              _isLoading = false;
+            });
+          });
+          break;
+        }
+    }
+
+  }
+
+  void _loadPage(List<dynamic> page) {
+    _page.clear();
+    for (final i in page) {
+      api.getStory(i as int).then((story) {
+        _page.add(FeedItem(
+          story: story,
         ));
-        _isLoading = false;
+        watch(page.length, _page.length);
+      }).catchError(() {
+        setState(() {
+          _page.add(ErrorItem(
+            title: "Error",
+            text: "Error while obtaining data",
+          ));
+          _isLoading = false;
+        });
       });
+    }
+  }
+
+  void _nextPage() {
+    if (_currentPage <= _pages) {
+      setState(() {
+        _currentPage++;
+        _isLoading = true;
+      });
+
+      _loadPage(_stories[_currentPage]);
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      setState(() {
+        _currentPage--;
+        _isLoading = true;
+      });
+
+      _loadPage(_stories[_currentPage]);
+    }
+  }
+
+  void _loadTab(int i) {
+    setState(() {
+      _currentTab = i;
     });
+    _refreshNewsFeed();
   }
 
   void watch(int a, int b) {
@@ -80,28 +155,99 @@ class _FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
-    _refreshFeed();
+    _refreshNewsFeed();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView(
-              children: _stories,
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _refreshFeed,
-        tooltip: 'Reload feed',
-        child: Icon(Icons.refresh),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.refresh), onPressed: _refreshNewsFeed)
+          ],
+        ),
+        body: _isLoading
+            ? Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.navigate_before),
+                          onPressed: _previousPage,
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text((_currentPage + 1).toString() +
+                                " of " +
+                                _pages.toString()),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.navigate_next),
+                          onPressed: _nextPage,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              )
+            : Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      children: _page,
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.navigate_before),
+                          onPressed: _previousPage,
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text((_currentPage + 1).toString() +
+                                " of " +
+                                _pages.toString()),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.navigate_next),
+                          onPressed: _nextPage,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _loadTab,
+          currentIndex: _currentTab,
+          items: [
+            BottomNavigationBarItem(
+                title: Text("New Stories"),
+                icon: Icon(Icons.schedule, color: Colors.grey),
+                activeIcon: Icon(Icons.schedule, color: Colors.orangeAccent)),
+            BottomNavigationBarItem(
+                title: Text("Top Stories"),
+                icon: Icon(Icons.sort, color: Colors.grey),
+                activeIcon: Icon(Icons.sort, color: Colors.orangeAccent)),
+            BottomNavigationBarItem(
+                title: Text("Best Stories"),
+                icon: Icon(Icons.favorite, color: Colors.grey),
+                activeIcon:
+                    Icon(Icons.favorite, color: Colors.orangeAccent))
+          ],
+          type: BottomNavigationBarType.fixed,
+        ));
   }
 }
