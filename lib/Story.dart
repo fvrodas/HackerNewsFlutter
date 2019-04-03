@@ -23,7 +23,11 @@ class Story {
      time = json['time'];
      title = json['title'];
      type = json['type'];
-     url = json['url'];
+     if (json['url'] != null) {
+        url = json['url'];
+     } else {
+        url = 'https://news.ycombinator.com/item?id=$id';
+     }
   }
 
 }
