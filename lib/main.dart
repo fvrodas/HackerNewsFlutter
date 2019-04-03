@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'FeedItem.dart';
 import 'ErrorItem.dart';
@@ -46,7 +48,7 @@ class _FeedPageState extends State<FeedPage> {
             _pages = r.length;
             _stories = r;
             _loadPage(r[0]);
-          }).catchError(() {
+          }, onError: (error) {
             setState(() {
               _page.add(ErrorItem(
                 title: "Error",
@@ -63,7 +65,7 @@ class _FeedPageState extends State<FeedPage> {
             _pages = r.length;
             _stories = r;
             _loadPage(r[0]);
-          }).catchError(() {
+          }, onError: (error) {
             setState(() {
               _page.add(ErrorItem(
                 title: "Error",
@@ -80,7 +82,7 @@ class _FeedPageState extends State<FeedPage> {
             _pages = r.length;
             _stories = r;
             _loadPage(r[0]);
-          }).catchError(() {
+          }, onError: (error) {
             setState(() {
               _page.add(ErrorItem(
                 title: "Error",
@@ -102,7 +104,7 @@ class _FeedPageState extends State<FeedPage> {
           story: story,
         ));
         watch(page.length, _page.length);
-      }).catchError(() {
+      }, onError: (error) {
         setState(() {
           _page.add(ErrorItem(
             title: "Error",
