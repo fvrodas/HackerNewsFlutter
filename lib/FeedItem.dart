@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:share/share.dart';
 import 'Story.dart';
+import 'WebViewPage.dart';
 
 
 class FeedItem extends StatefulWidget {
@@ -17,8 +16,9 @@ class _FeedItemState extends State<FeedItem> {
   void _openUrl() {
        Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => FeedDetailPage(
-                widget.story.title, widget.story.url
+              MaterialPageRoute(builder: (context) => WebViewPage(
+                  title: widget.story.title,
+                  url: widget.story.url
               ),
             )
        );
@@ -78,40 +78,6 @@ class _FeedItemState extends State<FeedItem> {
         ),
       ),
     ),
-    );
-  }
-}
-
-class FeedDetailPage extends StatelessWidget {
-  FeedDetailPage(this.title, this.url);
-
-  final String title;
-  final String url;
-
-  void _handleTap() {
-      Share.share(this.url);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WebviewScaffold(
-      url: this.url,
-      appBar: new AppBar(
-        title: Text(this.title),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.share), onPressed: _handleTap)
-        ],
-      ),
-      withZoom: false,
-      withLocalStorage: true,
-      hidden: true,
-      initialChild: Container(
-        color: Colors.amberAccent,
-        child: const Center(
-          child: Text('Loading...'),
-        ),
-      ),
     );
   }
 }
