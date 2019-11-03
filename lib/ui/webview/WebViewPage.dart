@@ -23,7 +23,7 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title, style: TextStyle( color: ThemeData.dark().textTheme.title.color),),
           centerTitle: true,
           actions: <Widget>[
             IconButton(icon: Icon(Icons.share), onPressed: _handleTap)
