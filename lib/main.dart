@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:YAHNC/ui/home/HomePage.dart';
@@ -11,22 +10,15 @@ class HackerNewsApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hacker News Feed',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+          primarySwatch: Colors.orange,
           primaryColor: Colors.orange,
-        accentColor: Colors.orangeAccent,
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          elevation: 0,
-          actionsIconTheme: IconThemeData(
-            color: Colors.orange
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.orange
-          )
-        )
-      ),
+          accentColor: Colors.orangeAccent,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          appBarTheme: AppBarTheme(
+              color: Colors.white,
+              actionsIconTheme: IconThemeData(color: Colors.orange),
+              iconTheme: IconThemeData(color: Colors.orange))),
       darkTheme: ThemeData(
           primarySwatch: Colors.orange,
           primaryColor: Colors.orange,
@@ -35,21 +27,12 @@ class HackerNewsApp extends StatelessWidget {
           backgroundColor: Colors.black,
           appBarTheme: AppBarTheme(
               color: ThemeData.dark().canvasColor,
-              elevation: 0,
-              actionsIconTheme: IconThemeData(
-                  color: Colors.orange
-              ),
+              actionsIconTheme: IconThemeData(color: Colors.orange),
               brightness: Brightness.dark,
-              iconTheme: IconThemeData(
-                  color: Colors.orange
-              )
-          )
-      ),
+              iconTheme: IconThemeData(color: Colors.orange))),
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
-      routes: {
-        "/": (context) => HomePage(title: "Home")
-      },
+      routes: {"/": (context) => HomePage(title: "Home")},
     );
   }
 }
