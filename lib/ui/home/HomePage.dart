@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> implements IHomePageView {
   int _pages = 0;
   int _currentTab = 0;
   int _currentPage = 0;
-  List<Widget> _page = List();
+  List<Story> _page = List();
   List<List<int>> _stories = List();
   HomePagePresenter _presenter = HomePagePresenter();
 
@@ -42,15 +42,9 @@ class _HomePageState extends State<HomePage> implements IHomePageView {
 
   void _loadPage(List<Story> page) {
     _page.clear();
-
-    for (final i in page) {
-      setState(() {
-        _page.add(FeedItem(
-          key: UniqueKey(),
-          story: i,
-        ));
-      });
-    }
+    setState(() {
+      _page.addAll(page);
+    });
     setLoading(false);
   }
 
@@ -137,9 +131,15 @@ class _HomePageState extends State<HomePage> implements IHomePageView {
                 children: <Widget>[
                   Expanded(
                     child: RefreshIndicator(
-                        child: ListView(
-                          children: _page,
-                        ),
+                        child: ListView.builder(
+                            itemCount: _page.length,
+                            itemBuilder: (context, index) {
+                          return FeedItem(
+                            key: UniqueKey(),
+                            story: _page[index],
+                            index: index,
+                          );
+                        }),
                         onRefresh: () => _refreshNewsFeed()),
                   ),
                   Container(

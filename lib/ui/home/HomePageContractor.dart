@@ -41,7 +41,7 @@ class HomePagePresenter implements IHomePagePresenter<IHomePageView> {
     _view.setLoading(true);
     var callback = NetworkCallback<List<int>>(
       onSuccess: (stories) {
-        var pages = Tools.generatePages(stories, 10);
+        var pages = Tools.generatePages(stories, 30);
         _view.setLoading(false);
         _view.onNewStoriesRetrieved(pages);
       },

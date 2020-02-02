@@ -23,7 +23,7 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title, style: TextStyle( color: ThemeData.dark().textTheme.title.color),),
+          title: Text(widget.title, style: TextStyle( color: Theme.of(context).textTheme.title.color),),
           centerTitle: true,
           actions: <Widget>[
             IconButton(icon: Icon(Icons.share), onPressed: _handleTap)
@@ -31,7 +31,7 @@ class _WebViewPageState extends State<WebViewPage> {
         ),
       body: WebView(
         initialUrl: widget.url,
-        javascriptMode: JavascriptMode.unrestricted,
+        javascriptMode: JavascriptMode.disabled,
         onWebViewCreated: (WebViewController controller) {
           _controller = controller;
         },
