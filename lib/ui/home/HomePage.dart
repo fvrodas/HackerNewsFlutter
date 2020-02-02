@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> implements IHomePageView {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title, style: TextStyle(color: ThemeData.dark().textTheme.title.color),),
+          title: Text(widget.title),
           centerTitle: true,
         ),
         body: _isLoading
@@ -121,9 +121,7 @@ class _HomePageState extends State<HomePage> implements IHomePageView {
                         ),
                         Expanded(
                           child: Center(
-                            child: Text((_currentPage + 1).toString() +
-                                " of " +
-                                _pages.toString()),
+                            child: Text("Loading..."),
                           ),
                         ),
                         IconButton(
